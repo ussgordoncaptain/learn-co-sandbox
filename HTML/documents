@@ -1,0 +1,33 @@
+tags/markup/content
+
+tags
+
+HTML uses markup elements that wrap content 
+<> represent tags 
+
+hello world example 
+
+<p>Hello world</p>
+
+attributes inside of opeing tag <a INSERT NFO>stuff </a>
+ex <a href="http://www.youtube.com">video site</a>
+
+Nesting fo elements 
+
+<p> something goes here <a hreft="http://www.mtggoldfish.com/metagame/modern">Modern sucks</a> the rest of the statement </p>
+
+document tag 
+
+<doctype> 
+
+#doctype specifes what type of HTML it is.  There are multiple versions of HTML
+
+no closing tag needed for <doctype> declaration 
+
+<!DOCTYPE html> (specifes HTML 5)
+<!DOCTYPE>
+
+commments 
+
+<!-- COMMENT 
+  -->

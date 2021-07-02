@@ -1,0 +1,254 @@
+Object relational mapping acesses a database using OO langauge.
+
+No special magic to ORM you are connecting RUBY to database
+
+Example code 
+database_connection = SQLite3::Database.new('db/my_database.db')
+ 
+database_connection.execute("Some SQL statement")
+
+
+ORMs allow for 2 things
+
+1. cutting down on repitition in code
+
+2. implementing conventional patterns
+
+
+Example code 
+database_connection = SQLite3::Database.new('db/pets.db')
+Create owner table and cats table
+
+CREATE TABLE IF NOT EXISTS cats("id INTEGER PRIMARY KEY, name TEXT, breed TEXT, age INTEGER")
+
+Can write a method to a class to handle inserting into Database
+Class Cat
+  @@all = []
+  
+  def initialize (name, breed, age)
+    @name = name 
+    @breed = breed
+    @age = age 
+    @@all << self
+    end 
+    
+    def self.all
+      @@all
+      end 
+      
+      def self.save(name, breed, age, database_connection) 
+        database_connection.execute("INSERT INTO cats (name, breed age) VALUES (?, ?, ?)", name, breed, age
+        end 
+        end 
+        
+        mapping clas to a table 
+        #when building a ORM we quate a class with a table and instances to rows on the table 
+Class Song
+  attr_acessor :name, album
+  def initialize (name, album) 
+  @name = name 
+  @album =album 
+  end 
+  
+  end 
+in building an ORM it i conventional to pluralize teh class to create the names of the table (UGH REALLY) Song class == "songs" table 
+
+config directory has enviornment.rb file you will need to get this 
+
+require 'sqlite3'
+require_relative '../lib/song.rb'
+DB = {:conn => SQLite3::Database.new("db/music.db"}
+this sets up a connection to the database in the file lib/song.rb we can acess the constand DB which looks like this 
+
+DB[:conn] allows us THEN to access the database connection (since we have a hash called database) 
+Creating the table 
+class song
+attr_acessor :name, :album, :id
+
+def itialize (name, album, id=nil) #id=nil 
+  @id = id
+  @name  = name 
+  @album = album
+end
+def self.createtable 
+  sql = << -SQL 
+  CREATE TABLE IF NOT EXISTS songs id INTEGER PRIMARY KEY, name TEXT, album TEXT) 
+  SQL 
+  DB[:conn].execute(sql)
+  end 
+  end 
+  
+  #when a new song is created with Song.new method, the songs id is NOT SET. a song gets and id when it is saved into the databae songs get an ID after song is set. id of a gien record is unique in SQL, only database itself can insure id of each record is unique 
+  
+  .create_table method is a class method rather than a method in main because the class as a whole needs to create it own song.
+  
+  use heredoc to create a string that runs multiple lines
+  
+  When we are saving ruby objects to a database it is more correct to say that individual attributes of a given object are saved into the database 
+  
+  example here's a song
+  gold_digger= Song.new("Gold Digger", "Late Registration")
+  
+  the SQL statement would look like this 
+  
+  INSERT INTO songs (name, album) VALUES ("Gold Digger", "Late Registration"); 
+  
+  class Song 
+    def save 
+      sql = <<-SQL 
+        INSERT INTO songs (name, album) VALUES (? , ?)SQL 
+        DB[:conn].execute(sql, self.name, self.album)
+        end 
+        
+        
+      emd 
+    the ? in the program represent bound parameters they are placeholders, then the DB[:conn].execute command takes the values we pass on as an argument and apply them as the values of ? marks 
+    
+    creating new records upon intialization is typically a bad idea, since as the program changes new information well have to be added, or one might want to creat objects that AREN'T saved. 
+    
+    class Song 
+    attr_accessor :name, :album, :id 
+    def initialize(name, album, id=nil)
+      @id=id 
+      @name = name 
+      @album = album
+    end 
+    def self.create table 
+    sql = <<-SQL 
+    CREATE TABLE IF NOT EXISTS songs (id INTEGER PRIMARY KEY, name TEXT, album TEXT)
+    SQL 
+    DB[:conn].execute(sql)
+    end 
+    def save 
+      sql <<-SQL
+        INSERT INTO songs (name, album) VALUES (?, ?) 
+        SQL 
+        DB[:conn].execute(sql, self.name, self.album)
+        end 
+        
+      end 
+      
+      creating songs and saving ongs 
+      
+      Song.create_table 
+      hello = song.new ("Hello", "25")
+      hello.save 
+      The row of the data would look like things
+      ID Name album
+      1  hello  25
+      
+      Notice that there exists a row for ID that isn't saved into the object! 
+      
+      Change save method to get @id back into object 
+      
+      def save
+        sql = <<-SQL 
+        ql = <<-SQL
+      INSERT INTO songs (name, album) 
+      VALUES (?, ?)
+    SQL
+ 
+    DB[:conn].execute(sql, self.name, self.album)
+    @id= DB[conn].execute ("SELECT last_insert_rowid() FROM songs")[0][0]
+    end 
+    
+    end
+    
+    create method 
+    
+    def self.create(name:, album:)
+    song = Song.new (name, album)
+    song.save
+    return song
+    end 
+  Updating records
+  
+  in ruby we may need to update a record, to dod this we do the following 
+  
+  1. Retrieve attributes from SQL database
+  2. Turn it into a ruby object
+  3. Change the ruby object
+  4. Save the newly updated attributes in database 
+  
+  example class
+  
+  class Song
+  attr_accessor :name :album
+  attr_reader :id
+  def initialize(id=nil, name, album)
+    @id = id
+    @name = name 
+    @album = album 
+  end 
+    def self.create_table
+    sql =  <<-SQL
+      CREATE TABLE IF NOT EXISTS songs (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        album TEXT
+        )
+        SQL
+    DB[:conn].execute(sql)
+  end
+ 
+  def save
+    sql = <<-SQL
+      INSERT INTO songs (name, album)
+      VALUES (?, ?)
+    SQL
+ 
+    DB[:conn].execute(sql, self.name, self.album)
+    @id = DB[:conn].execute("SELECT last_insert_rowid() FROM songs")[0][0]
+  end
+ 
+  def self.create(name:, album:)
+    song = Song.new(name, album)
+    song.save
+    song
+  end
+ 
+  def self.find_by_name(name)
+    sql = "SELECT * FROM songs WHERE name = ?"
+    result = DB[:conn].execute(sql, name)[0]
+    Song.new(result[0], result[1], result[2])
+  end
+end
+
+Updating a record 
+First get teh object 
+foo = Song.find_by_name("Quex") 
+2. 
+foo.album = "new album"
+Write an update.sql statement 
+
+UPDATE songs SET ALBUM = "new album" WHERE name = "Quex"
+
+
+Update method 
+
+
+We need to identify things via the ID rather than via the Name 
+
+initialize method would work as follows 
+
+initialize id to nil, name to name and other stuff to the appropiate value 
+
+From there INSERT the information into the database via save
+
+make a save method that finds the ID back 
+
+save method looks like this 
+
+def save 
+
+  sql_injection = <<-SQL 
+    INSERT INTO songs (name,album) 
+    VALUES (?,?)
+    SQL
+   DB[:conn].execute[sql_injection,self.name,self.album) 
+   @id = DB[:conn].execute("SELECT last_insert_rowid() FROM SONGS")[0][0]
+Need to make sure value of ID is in fact NIL 
+
+def save 
+  if self.id 
+    self.update

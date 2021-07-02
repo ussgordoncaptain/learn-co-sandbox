@@ -1,0 +1,187 @@
+#does this persist?
+
+#create Table 
+
+#Create a talbe with the following way
+
+sqlite> CREATE TABLE table_name ( id INTEGER PRIMARY KEY, foo TYPE, bar TYPE, ) ;
+#.help lets you look at all commands
+#To alter a table use the following 
+# ALTER TABLE #tablename ADD COLUMN columnname type
+#data types matter for defining the type of data 
+#CREATE TABLE cats (
+  id INTEGER PRIMARY KEY,
+    name TEXT, 
+    age INTEGER
+);
+#sample table, DEFINE the type, of data beforehand, (text/integer/real/blob)
+#text is alpha numeric characters
+#integer = ints 
+#REAL = decimals up to 15 characters long 
+#INSERT INTO
+#form is as follows 
+# INSERT INTO db_name (foo, bar, qux) VALUES (foo_val, bar_val, 
+
+#Selecting Data 
+#SELECT [oo, bar, quex, FROM database_name;
+#Order by 
+SELECT column_name FROM database_name ORDER BY column_name;
+(if you wish to use decending order type DESC after column name 
+
+SELECT column_name FROM database_name ORDER BY column_name DESC;
+
+#limit
+SELECT * FROM database_name ORDER BY age DESC LIMIT 2; 
+
+#limits the selection to the first 2 choices 
+
+#NULL, NULL is a special value that retuns a lack of input 
+
+#COUNT 
+
+SELECT COUNT(column_name) FROM database_name WHERE column_name= foo
+
+will return a number equal to the count of foo
+#GROUP BY 
+
+#AVG() 
+
+AVG returns average value of a column 
+
+SELECT AVG(column_name) FROM table_name AS foo;
+
+returns 
+
+foo 
+----------------------
+[the columns average value]
+
+SUM 
+
+SELECT SUM(column_name) FROM table_name
+
+MIN
+
+MAX
+
+COUNT 
+
+SELECT COUNT(column_name) FROM table_name;
+(Returns the quantity of rows with a non NULL value in that column)
+
+WHERE 
+
+
+Relational Database 
+
+multiple different Tables in a single database 
+
+Foreign Key
+
+To associate tables have a column labeled "foreign key" type INTEGER and the primary key of a primary key in a different table
+
+JOIN statements 
+4 types of join statement 
+INNER JOIN (all rows on both tables) 
+LEFT JOIN (all rows on left and matched on right)
+RIGHT JOIN (inverse of left)
+FULL JOIN 
+
+
+Example of an INNER JOIN 
+
+SELECT Cats.name, Cats.breed, Owners.name FROM Cats INNER JOIN Owners ON Cats.owner_id = Owners.id;
+
+Parts of an inner join 
+
+SELECT table1.foo, table1.bar, table1.quex//ect table2.foobar, table2.fooquex, FROM table1 INNER JOIN table2 ON table1.variable = table2.barquex ;
+EXAMPLE 
+
+will return 
+
+name             breed            owner_name
+---------------  ---------------  ----------
+Maru             Scottish Fold    mugumogu  
+Hana             Tabby            mugumogu  
+Nona             Tortoiseshell    Sophie 
+
+
+Note that it chose each cat once but owners multiple times.  
+
+NOTe that cats without owneres were not picked
+
+LEFT INNER JOIN 
+
+LEFT INNER JOIN will take in the entirety of the first db 
+
+
+OUTER JOIN 
+
+OUTER JOIN will 
+
+
+owners DB
+id               name      
+---------------  ----------
+1                mugumogu  
+2                Sophie    
+3                Penny   
+
+Cats DB 
+id               name        age         owner_id    breed        
+---------------  ----------  ----------  ----------  -------------
+1                Maru        3           1           Scottish Fold
+2                Hana        1           1           Tabby        
+3                Nona        4           2           Tortoiseshell
+4                Lil' Bub    2                       perma-kitten 
+
+Has many/belongs to relation 
+
+cats has column owner_id this is called a BELONGS TO realtionship 
+
+1 Owner HAS MANY cats 
+
+Join table 
+Starting from the 2 tables above 
+CREATE TABLE cats_owners (
+cat_id INTEGER,
+owner_id INTEGER
+);
+
+Now insert values that define each relationship
+
+INERT INTO cats_owners 
+(cat_id, owner_id) VALUES 
+(3,2) 
+
+INSERT INTO cats_owners (cat_id, owner_id) VALUES (3, 3); 
+
+From here we can use INNER JOIN to get the names of the cats (or other arbitrary data)  
+
+
+SORTING 
+
+
+ORDER BY() 
+
+Syntax
+
+SELECT column_foo, column_bar 
+FROM table_quex
+ORDER BY(column_foo) ASC|DESC, column_bar ASC|DESC;
+
+sample DB  (DB name= cats)
+name             age         breed          net_worth 
+---------------  ----------  -------------  ----------
+Maru             3           Scottish Fold  1000000   
+Hana             1           Tabby          21800     
+Grumpy Cat       4           Persian        181600    
+Lil\' Bub         2           Tortoiseshell  2000000  
+
+Wish for cats with greatest net net_worth
+SELECT * from cats ORDER BY(net_worth) DESC;
+
+WHERE only works for non-aggregates for something like SUM you need to use HAVING 
+
+SELECT employee, SUM(bonus) FROM employee_bonus 
+GROUP BY employee HAVING SUM(bonus) > 1000;

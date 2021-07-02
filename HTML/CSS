@@ -1,0 +1,34 @@
+CSS stands for Cascading style sheets it shows how to present an HTML document
+
+CSS and HTML play different roles. 
+
+Basics of CSS
+
+
+CSS selectors declare which css elements to sytle 
+
+slectors appear in many ways
+
+type of HTML
+
+Value of elemnts 
+
+value of attribute
+
+elments reelationship <p></p> withen element.infobox
+
+class is a common selecctor 
+
+classs selecctor's select EVERYTHING IN A CLASSS NAME
+
+class selector syntax is .classname
+
+
+
+<p class=foo> <.class=foo> 
+
+.foo 
+
+id selector to style elements, however only 1 element should have a given id
+id selector is #idvalue 
+

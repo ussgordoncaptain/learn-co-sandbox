@@ -1,0 +1,42 @@
+owners DB
+id               name      
+---------------  ----------
+1                mugumogu  
+2                Sophie    
+3                Penny   
+
+Cats DB 
+id               name        age         owner_id    breed        
+---------------  ----------  ----------  ----------  -------------
+1                Maru        3           1           Scottish Fold
+2                Hana        1           1           Tabby        
+3                Nona        4           2           Tortoiseshell
+4                Lil' Bub    2                       perma-kitten 
+
+Has many/belongs to relation 
+
+cats has column owner_id this is called a BELONGS TO realtionship 
+
+1 Owner HAS MANY cats 
+
+Join table 
+Starting from the 2 tables above 
+CREATE TABLE cats_owners (
+cat_id INTEGER,
+owner_id INTEGER
+);
+
+Now insert values that define each relationship
+
+INERT INTO cats_owners 
+(cat_id, owner_id) VALUES 
+(3,2) 
+
+INSERT INTO cats_owners (cat_id, owner_id) VALUES (3, 3); 
+
+From here we can use INNER JOIN to get the names of the cats (or other arbitrary data)  
+
+
+SORTING 
+
+

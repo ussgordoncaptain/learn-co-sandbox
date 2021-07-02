@@ -5,3 +5,9 @@ end
 #objects have IDs that make them different
 # quotes "" is just a fancy way of writing string.
 
+#SQL
+
+#Databases in SQL store data in tables 
+#rows called records
+# Colmns are named based on info Alawys use lowercase letter 
+#use_underscores_to_link_multiple_words

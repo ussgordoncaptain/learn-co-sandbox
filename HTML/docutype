@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html> 
+
+  <head>
+  ~metadata goes here
+  </head>
+  
+  <body>
+  content of page here
+  </body>
+</html>
+
+<h1>Largest header element</h1>
+<h6>Smallest header element</h6>
+
+
+image tags 
+
+<img src="IMAGE_URL" alt="boobs">
+
+(images are self closign)
+
+ul is unorderd list (not self closing
+<ul>
+  <li>hugs</li>
+  
+</ul>
